@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Weather App</title>
+    <style>
+      body {
+        font-family: Montserrat, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        width: 200px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      #weather-info {
+        margin-top: 20px;
+      }
+
+      footer {
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #666;
+      }
+
+      footer a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <input type="text" id="city-input" placeholder="Enter a city" />
+      <button id="search-btn">Search</button>
+      <div id="weather-info">
+        <h1 id="city-name">Paris</h1>
+        <p id="date-time">Saturday 15:32, moderate rain</p>
+        <p id="temperature">24°C</p>
+        <p id="humidity">Humidity: 87%</p>
+        <p id="wind">Wind: 7.2 km/h</p>
+      </div>
+      <footer>
+        <p>
+          This project was coded by Simran Qureshi and is on
+          <a href="https://github.com/simranq" target="_blank">GitHub</a> 
+        </p>
+      </footer>
+    </div>
+    <script>
+      document
+        .getElementById("search-btn")
+        .addEventListener("click", function () {
+          const city = document.getElementById("city-input").value;
+          if (city) {
+            fetchWeather(city);
+          }
+        });
+
+      function fetchWeather(city) {
+        // Replace with your actual API endpoint and key
+        const apiKey = "YOUR_API_KEY";
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("city-name").textContent = data.name;
+            document.getElementById("date-time").textContent =
+              new Date().toLocaleString();
+            document.getElementById("temperature").textContent = `${Math.round(
+              data.main.temp
+            )}°C`;
+            document.getElementById(
+              "humidity"
+            ).textContent = `Humidity: ${data.main.humidity}%`;
+            document.getElementById(
+              "wind"
+            ).textContent = `Wind: ${data.wind.speed} km/h`;
+          })
+          .catch((error) => {
+            console.error("Error fetching weather data:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
